@@ -12,7 +12,99 @@ class Field {
         this.colPos = 0;
         this.gameOver = false;
         this.foundHat = false;
-        //this.playerPosition = fieldArray[this.yPos][this.xPos];
+    }
+
+    static generateField(width, height) {
+        let newFieldArray = [];
+        let includesHat = false;
+        for (let i = 0; i < height; i++) {
+            let newRowArray = [];
+            if (i === 0) {
+                newRowArray.push(pathCharacter);
+                for (let j = (width - 2); j >= 0; j--) {
+                    let fieldSpace = Math.floor(Math.random() * 6);
+                    switch (fieldSpace) {
+                        case 0:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                        case 1:
+                            newRowArray.push(hole);
+                            break;
+                        case 2:
+                            newRowArray.push(hole);
+                            break;
+                        case 3:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                        case 4:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                        case 5:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                    }
+                }
+                newFieldArray.push(newRowArray);
+            } else if (i === (height - 1) && !includesHat) {
+                newRowArray.push(hat);
+                for (let j = width - 2; j >= 0; j--) {
+                    let fieldSpace = Math.floor(Math.random() * 6);
+                    switch (fieldSpace) {
+                        case 0:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                        case 1:
+                            newRowArray.push(hole);
+                            break;
+                        case 2:
+                            newRowArray.push(hole);
+                            break;
+                        case 3:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                        case 4:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                        case 5:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                    } 
+                }
+                newFieldArray.push(newRowArray);
+            } else {
+                for (let j = width - 1; j >= 0; j--) {
+                    let fieldSpace = Math.floor(Math.random() * 6);
+                    switch (fieldSpace) {
+                        case 0:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                        case 1:
+                            newRowArray.push(hole);
+                            break;
+                        case 2:
+                            if (!includesHat && (Math.floor(Math.random() * 3) * fieldSpace === 4)) {
+                                newRowArray.push(hat);
+                                includesHat = true;
+                            } else {
+                                newRowArray.push(hole);
+                            }
+                            break;
+                        case 3:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                        case 4:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                        case 5:
+                            newRowArray.push(fieldCharacter);
+                            break;
+                    }
+                }
+                newFieldArray.push(newRowArray);
+            }
+        
+        }
+        return newFieldArray;
     }
 
     print() {
@@ -65,7 +157,7 @@ class Field {
 
     wonGame() {
         let hatRow = this.field.findIndex(x => x.includes(hat));
-        console.log(hatRow);
+        //console.log(hatRow);
         let hatCol = this.field[hatRow].findIndex(x => x.includes(hat));
         
         if (hatRow === this.rowPos && hatCol === this.colPos) {
@@ -90,14 +182,16 @@ class Field {
     }
 }
 
+const gameFieldArr = Field.generateField(5,6);
+const gameField = new Field(gameFieldArr);
 
-const gameField = new Field([
-    [pathCharacter, fieldCharacter, fieldCharacter],
-    [hole, hole, fieldCharacter],
-    [hat, hole, fieldCharacter],
-    [fieldCharacter, fieldCharacter, fieldCharacter]
-]);
 gameField.gameStart();
 //console.log(gameField.field[gameField.rowPos][gameField.colPos]);
 //console.log(gameField.field.findIndex(x=>x.includes(hat)));
 //console.log(gameField.field[gameField.field.findIndex(x=>x.includes(hat))].findIndex(x=>x.includes(hat)));
+/*[
+    [pathCharacter, fieldCharacter, fieldCharacter],
+    [hole, hole, fieldCharacter],
+    [hat, hole, fieldCharacter],
+    [fieldCharacter, fieldCharacter, fieldCharacter]
+]*/
